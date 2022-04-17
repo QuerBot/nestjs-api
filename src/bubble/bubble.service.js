@@ -10,6 +10,14 @@ export class BubbleService {
     return 'TODO: getBubbleById';
   }
 
+  getBubbleMembers() {
+    return 'TODO: getBubbleMembers';
+  }
+
+  getBubbleMostFollowedUsers() {
+    return 'TODO: getBubbleMostFollowedUsers';
+  }
+
   postBubble() {
     return 'TODO: postBubble';
   }

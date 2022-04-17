@@ -65,6 +65,11 @@ export class UserController {
     return this.userService.updateUserHandle();
   }
 
+  @Patch(':id/bubble')
+  updateBubbleMembership() {
+    return this.userService.updateBubbleMembership();
+  }
+
   @Delete()
   deleteUser() {
     return this.userService.deleteUser();

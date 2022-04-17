@@ -6,7 +6,7 @@ export class UserService {
     return 'TODO: getUser';
   }
 
-  getUserById() {
+  getUserbyId() {
     return 'TODO: getUserById';
   }
 
@@ -40,6 +40,10 @@ export class UserService {
 
   updateUserHandle() {
     return 'TODO: updateUserHandle';
+  }
+
+  updateBubbleMembership() {
+    return 'TODO: updateBubbleMembership';
   }
 
   deleteUser() {

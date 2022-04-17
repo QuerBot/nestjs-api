@@ -25,6 +25,16 @@ export class BubbleController {
     return this.bubbleService.getBubbleById();
   }
 
+  @Get(':id/members')
+  getBubbleMembers() {
+    return this.bubbleService.getBubbleMembers();
+  }
+
+  @Get(':id/mostFollowed')
+  getBubbleMostFollowedUsers() {
+    return this.bubbleService.getBubbleMostFollowedUsers();
+  }
+
   @Post()
   postBubble() {
     return this.bubbleService.postBubble();
