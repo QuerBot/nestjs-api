@@ -7,6 +7,8 @@ import {
   Delete,
   Body,
   Bind,
+  Param,
+  BadRequestException,
 } from '@nestjs/common';
 import { BubbleService } from './bubble.service';
 
@@ -18,38 +20,44 @@ export class BubbleController {
   }
 
   @Get()
-  getBubble() {
-    return this.bubbleService.getBubble();
+  async getBubble() {
+    return await this.bubbleService.getBubble();
   }
 
   @Get(':id')
-  getBubbleById() {
-    return this.bubbleService.getBubbleById();
+  @Bind(Param('id'))
+  async getBubbleById(id) {
+    return await this.bubbleService.getBubbleById(id);
   }
 
   @Get(':id/members')
-  getBubbleMembers() {
-    return this.bubbleService.getBubbleMembers();
+  async getBubbleMembers() {
+    return await this.bubbleService.getBubbleMembers();
   }
 
   @Get(':id/mostFollowed')
-  getBubbleMostFollowedUsers() {
-    return this.bubbleService.getBubbleMostFollowedUsers();
+  async getBubbleMostFollowedUsers() {
+    return await this.bubbleService.getBubbleMostFollowedUsers();
   }
 
   @Post()
   @Bind(Body())
-  postBubble(body) {
-    return this.bubbleService.postBubble(body.name, body.description);
+  async postBubble(body) {
+    return await this.bubbleService.postBubble(body.name, body.description);
   }
 
-  @Patch()
-  updateBubble() {
-    return this.bubbleService.updateBubble();
+  @Patch(':id')
+  @Bind(Param('id'), Body())
+  async updateBubble(id, body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.bubbleService.updateBubble(id, body);
+    }
+    throw new BadRequestException('Empty Body');
   }
 
-  @Delete()
-  deleteBubble() {
-    return this.bubbleService.deleteBubble();
+  @Delete(':id')
+  @Bind(Param('id'))
+  async deleteBubble(id) {
+    return await this.bubbleService.deleteBubble(id);
   }
 }

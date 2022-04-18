@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import generateId from '../util/helper/generadeId';
@@ -10,38 +9,42 @@ export class BubbleService {
   constructor(bubbleRepository) {
     this.bubbleRepository = bubbleRepository;
   }
-  getBubble() {
-    return this.bubbleRepository.find();
+  async getBubble() {
+    return await this.bubbleRepository.find();
   }
 
-  getBubbleById(id) {
-    return this.bubbleRepository.find(id);
+  async getBubbleById(id) {
+    return await this.bubbleRepository.find({
+      where: {
+        id: id,
+      },
+    });
   }
 
-  getBubbleMembers(id) {
+  async getBubbleMembers(id) {
     return 'TODO: getBubbleMembers';
   }
 
-  getBubbleMostFollowedUsers() {
+  async getBubbleMostFollowedUsers() {
     return 'TODO: getBubbleMostFollowedUsers';
   }
 
-  postBubble(name, description) {
-    let id = generateId(this.bubbleRepository, name);
-    return this.bubbleRepository.save(
-      this.bubbleRepository.create({
-        id: id,
-        name: name,
-        description: description,
-      }),
-    );
+  async postBubble(name, description) {
+    let id = await generateId(this.bubbleRepository, name);
+    return await this.bubbleRepository.save({
+      id: id,
+      name: name,
+      description: description,
+    });
   }
 
-  updateBubble() {
-    return 'TODO: updateBubble';
+  async updateBubble(id, updates) {
+    return await this.bubbleRepository.update(id, updates);
   }
 
-  deleteBubble() {
-    return 'TODO: deleteBubble';
+  async deleteBubble(id) {
+    return await this.bubbleRepository.delete({
+      id: id,
+    });
   }
 }
