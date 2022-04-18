@@ -14,6 +14,7 @@ module.exports = new EntitySchema({
     },
     lastCheck: {
       type: 'datetime',
+      default: () => 'NOW()',
     },
     rating: {
       type: 'int',

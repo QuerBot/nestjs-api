@@ -5,6 +5,10 @@ import {
   Post,
   Patch,
   Delete,
+  Body,
+  Bind,
+  Param,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -16,62 +20,68 @@ export class UserController {
   }
 
   @Get()
-  getUser() {
-    return this.userService.getUser();
+  async getUser() {
+    return await this.userService.getUser();
   }
 
   @Get(':id')
-  getUserById() {
-    return this.userService.getUserbyId();
+  @Bind(Param('id'))
+  async getUserById(id) {
+    return await this.userService.getUserbyId(id);
   }
 
   @Get(':id/followings')
-  getUserFollowings() {
-    return this.userService.getUserFollowings();
+  async getUserFollowings() {
+    return await this.userService.getUserFollowings();
   }
 
   @Get(':id/followers')
-  getUserFollowers() {
-    return this.userService.getUserFollowers();
+  async getUserFollowers() {
+    return await this.userService.getUserFollowers();
   }
 
   @Get(':id/handle')
-  getUserHandle() {
-    return this.userService.getUserHandle();
+  @Bind(Param('id'))
+  async getUserHandle(id) {
+    return await this.userService.getUserHandle(id);
   }
 
   @Post()
-  postUser() {
-    return this.userService.postUser();
+  @Bind(Body())
+  async postUser(body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.postUser(body);
+    }
+    throw new BadRequestException('Missing Body');
   }
 
   @Patch(':id')
-  updateUser() {
-    return this.userService.updateUser();
+  @Bind(Param('id'), Body())
+  async updateUser(id, body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.updateUser(id, body);
+    }
+    throw new BadRequestException('Missing Body');
   }
 
   @Patch(':id/followings')
-  updateUserFollowings() {
-    return this.userService.updateUserFollowings();
+  async updateUserFollowings() {
+    return await this.userService.updateUserFollowings();
   }
 
   @Patch(':id/followers')
-  updateUserFollowers() {
-    return this.userService.updateUserFollowers();
-  }
-
-  @Patch(':id/handle')
-  updateUserHandle() {
-    return this.userService.updateUserHandle();
+  async updateUserFollowers() {
+    return await this.userService.updateUserFollowers();
   }
 
   @Patch(':id/bubble')
-  updateBubbleMembership() {
-    return this.userService.updateBubbleMembership();
+  async updateBubbleMembership() {
+    return await this.userService.updateBubbleMembership();
   }
 
-  @Delete()
-  deleteUser() {
-    return this.userService.deleteUser();
+  @Delete(':id')
+  @Bind(Param('id'))
+  async deleteUser(id) {
+    return await this.userService.deleteUser(id);
   }
 }

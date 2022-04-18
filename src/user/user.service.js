@@ -5,54 +5,58 @@ import User from './user.entity';
 @Injectable()
 @Dependencies(getRepositoryToken(User))
 export class UserService {
-  constructor(userRespository) {
-    this.userRespository = userRespository;
-  }
-  getUser() {
-    return 'TODO: getUser';
+  constructor(userRepository) {
+    this.userRepository = userRepository;
   }
 
-  getUserbyId() {
-    return 'TODO: getUserById';
+  async getUser() {
+    return await this.userRepository.find();
   }
 
-  getUserFollowings() {
+  async getUserbyId(id) {
+    return await this.userRepository.find({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  async getUserFollowings() {
     return 'TODO: getUserFollowings';
   }
 
-  getUserFollowers() {
+  async getUserFollowers() {
     return 'TODO: getUserFollowers';
   }
 
-  getUserHandle() {
-    return 'TODO: getUserHandle';
+  async getUserHandle(id) {
+    let user = await this.userRepository.findOne({ id });
+    return user.handle;
   }
 
-  postUser() {
-    return 'TODO: postUser';
+  async postUser(user) {
+    return await this.userRepository.save(user);
   }
 
-  updateUser() {
-    return 'TODO: updateUser';
+  async updateUser(id, user) {
+    return await this.userRepository.update(id, user);
   }
 
-  updateUserFollowings() {
+  async updateUserFollowings() {
     return 'TODO: updateUserFollowings';
   }
 
-  updateUserFollowers() {
+  async updateUserFollowers() {
     return 'TODO: updateUserFollowers';
   }
 
-  updateUserHandle() {
-    return 'TODO: updateUserHandle';
-  }
-
-  updateBubbleMembership() {
+  async updateBubbleMembership() {
     return 'TODO: updateBubbleMembership';
   }
 
-  deleteUser() {
-    return 'TODO: deleteUser';
+  async deleteUser(id) {
+    return await this.userRepository.delete({
+      id: id,
+    });
   }
 }
