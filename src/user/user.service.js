@@ -1,7 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Dependencies } from '@nestjs/common';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import User from './user.entity';
 
 @Injectable()
+@Dependencies(getRepositoryToken(User))
 export class UserService {
+  constructor(userRespository) {
+    this.userRespository = userRespository;
+  }
   getUser() {
     return 'TODO: getUser';
   }
@@ -50,4 +56,3 @@ export class UserService {
     return 'TODO: deleteUser';
   }
 }
-

@@ -5,6 +5,8 @@ import {
   Post,
   Patch,
   Delete,
+  Body,
+  Bind,
 } from '@nestjs/common';
 import { BubbleService } from './bubble.service';
 
@@ -36,8 +38,9 @@ export class BubbleController {
   }
 
   @Post()
-  postBubble() {
-    return this.bubbleService.postBubble();
+  @Bind(Body())
+  postBubble(body) {
+    return this.bubbleService.postBubble(body.name, body.description);
   }
 
   @Patch()
