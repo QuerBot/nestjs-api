@@ -1,5 +1,6 @@
 var EntitySchema = require('typeorm').EntitySchema;
 var User = require('./user.model').User;
+var Bubble = require('../bubble/bubble.model').Bubble;
 
 module.exports = new EntitySchema({
   name: 'User',
@@ -18,6 +19,14 @@ module.exports = new EntitySchema({
     },
     rating: {
       type: 'int',
+    },
+  },
+  relations: {
+    bubble: {
+      type: 'many-to-many',
+      target: 'Bubble',
+      joinTable: true,
+      cascade: true,
     },
   },
 });
