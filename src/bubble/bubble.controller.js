@@ -31,8 +31,9 @@ export class BubbleController {
   }
 
   @Get(':id/members')
-  async getBubbleMembers() {
-    return await this.bubbleService.getBubbleMembers();
+  @Bind(Param('id'))
+  async getBubbleMembers(id) {
+    return await this.bubbleService.getBubbleMembers(id);
   }
 
   @Get(':id/mostFollowed')

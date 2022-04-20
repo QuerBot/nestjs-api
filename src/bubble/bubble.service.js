@@ -2,12 +2,14 @@ import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import generateId from '../util/helper/generadeId';
 import Bubble from './bubble.entity';
+import User from '../user/user.entity';
 
 @Injectable()
-@Dependencies(getRepositoryToken(Bubble))
+@Dependencies(getRepositoryToken(Bubble), getRepositoryToken(User))
 export class BubbleService {
-  constructor(bubbleRepository) {
+  constructor(bubbleRepository, userRepository) {
     this.bubbleRepository = bubbleRepository;
+    this.userRepository = userRepository;
   }
   async getBubble() {
     return await this.bubbleRepository.find();
@@ -22,7 +24,12 @@ export class BubbleService {
   }
 
   async getBubbleMembers(id) {
-    return 'TODO: getBubbleMembers';
+    return await this.userRepository.find({
+      join: { alias: 'user', innerJoin: { bubble: 'user_bubble_bubble' } },
+      where: qb => {
+        qb.where('bubble.bubbleId = :bubbleId', { bubbleId: id });
+      },
+    });
   }
 
   async getBubbleMostFollowedUsers() {

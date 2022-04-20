@@ -8,7 +8,7 @@ module.exports = new EntitySchema({
   columns: {
     id: {
       primary: true,
-      type: 'int',
+      type: 'bigint',
     },
     handle: {
       type: 'varchar',
@@ -28,6 +28,11 @@ module.exports = new EntitySchema({
       joinTable: true,
       cascade: true,
       eager: true,
+    },
+    follows: {
+      type: 'many-to-many',
+      target: 'User',
+      joinTable: true,
     },
   },
 });
