@@ -1,12 +1,14 @@
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import Bubble from '../bubble/bubble.entity';
 import User from './user.entity';
 
 @Injectable()
-@Dependencies(getRepositoryToken(User))
+@Dependencies(getRepositoryToken(User), getRepositoryToken(Bubble))
 export class UserService {
-  constructor(userRepository) {
+  constructor(userRepository, bubbleRepository) {
     this.userRepository = userRepository;
+    this.bubbleRepository = bubbleRepository;
   }
 
   async getUser() {
@@ -38,6 +40,13 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
+  async addUserToBubble(id, bubbleId) {
+    const user = await this.userRepository.findOne({ id });
+    const bubble = await this.bubbleRepository.findOne({ id: bubbleId });
+    user.bubble.push(bubble);
+    return await this.userRepository.save(user);
+  }
+
   async updateUser(id, user) {
     return await this.userRepository.update(id, user);
   }
@@ -50,13 +59,14 @@ export class UserService {
     return 'TODO: updateUserFollowers';
   }
 
-  async updateBubbleMembership() {
-    return 'TODO: updateBubbleMembership';
-  }
-
   async deleteUser(id) {
     return await this.userRepository.delete({
       id: id,
     });
+  }
+  async deleteUserFromBubble(id, bubbleId) {
+    const user = await this.userRepository.findOne({ id });
+    user.bubble = user.bubble.filter(item => item.id !== bubbleId);
+    return await this.userRepository.save(user);
   }
 }

@@ -27,6 +27,7 @@ module.exports = new EntitySchema({
       target: 'Bubble',
       joinTable: true,
       cascade: true,
+      eager: true,
     },
   },
 });

@@ -55,6 +55,15 @@ export class UserController {
     throw new BadRequestException('Missing Body');
   }
 
+  @Post(':id/addToBubble')
+  @Bind(Param('id'), Body())
+  async addUserToBubble(id, body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.addUserToBubble(id, body.id);
+    }
+    throw new BadRequestException('Missing Body');
+  }
+
   @Patch(':id')
   @Bind(Param('id'), Body())
   async updateUser(id, body) {
@@ -74,14 +83,18 @@ export class UserController {
     return await this.userService.updateUserFollowers();
   }
 
-  @Patch(':id/bubble')
-  async updateBubbleMembership() {
-    return await this.userService.updateBubbleMembership();
-  }
-
   @Delete(':id')
   @Bind(Param('id'))
   async deleteUser(id) {
     return await this.userService.deleteUser(id);
+  }
+
+  @Delete(':id/bubble')
+  @Bind(Param('id'), Body())
+  async deleteUserFromBubble(id, body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.deleteUserFromBubble(id, body.id);
+    }
+    throw new BadRequestException('Missing Body');
   }
 }
