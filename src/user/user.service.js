@@ -23,12 +23,30 @@ export class UserService {
     });
   }
 
-  async getUserFollowings() {
-    return 'TODO: getUserFollowings';
+  async getUserFollowings(id) {
+    return await this.userRepository.query(
+      ` SELECT * 
+        FROM user U
+        WHERE U.id <> ${id}
+          AND EXISTS(
+            SELECT 1
+            FROM user_follows_user F
+            WHERE (F.userId_1 = ${id} AND F.userId_2 = U.id )
+            );  `,
+    );
   }
 
-  async getUserFollowers() {
-    return 'TODO: getUserFollowers';
+  async getUserFollowers(id) {
+    return await this.userRepository.query(
+      ` SELECT * 
+        FROM user U
+        WHERE U.id <> ${id}
+          AND EXISTS(
+            SELECT 1
+            FROM user_follows_user F
+            WHERE (F.userId_2 = ${id} AND F.userId_1 = U.id )
+            );  `,
+    );
   }
 
   async getUserHandle(id) {
@@ -66,7 +84,7 @@ export class UserService {
   }
   async deleteUserFromBubble(id, bubbleId) {
     const user = await this.userRepository.findOne({ id });
-    user.bubble = user.bubble.filter(item => item.id !== bubbleId);
+    user.bubble = user.bubble.filter((item) => item.id !== bubbleId);
     return await this.userRepository.save(user);
   }
 }

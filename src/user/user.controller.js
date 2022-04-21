@@ -31,13 +31,15 @@ export class UserController {
   }
 
   @Get(':id/followings')
-  async getUserFollowings() {
-    return await this.userService.getUserFollowings();
+  @Bind(Param('id'))
+  async getUserFollowings(id) {
+    return await this.userService.getUserFollowings(id);
   }
 
   @Get(':id/followers')
-  async getUserFollowers() {
-    return await this.userService.getUserFollowers();
+  @Bind(Param('id'))
+  async getUserFollowers(id) {
+    return await this.userService.getUserFollowers(id);
   }
 
   @Get(':id/handle')

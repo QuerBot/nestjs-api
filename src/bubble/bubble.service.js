@@ -24,12 +24,15 @@ export class BubbleService {
   }
 
   async getBubbleMembers(id) {
-    return await this.userRepository.find({
-      join: { alias: 'user', innerJoin: { bubble: 'user_bubble_bubble' } },
-      where: qb => {
-        qb.where('bubble.bubbleId = :bubbleId', { bubbleId: id });
-      },
-    });
+    return await this.userRepository.query(
+      ` SELECT *
+        FROM user U
+        WHERE U.id IN (
+            SELECT Ubb.userId
+            FROM user_bubble_bubble Ubb
+            WHERE Ubb.bubbleId = "${id}"
+            );  `,
+    );
   }
 
   async getBubbleMostFollowedUsers() {
