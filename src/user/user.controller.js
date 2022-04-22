@@ -75,14 +75,15 @@ export class UserController {
     throw new BadRequestException('Missing Body');
   }
 
-  @Patch(':id/followings')
-  async updateUserFollowings() {
-    return await this.userService.updateUserFollowings();
-  }
-
   @Patch(':id/followers')
   async updateUserFollowers() {
     return await this.userService.updateUserFollowers();
+  }
+
+  @Patch(':id/followings')
+  @Bind(Param('id'), Body())
+  async updateUserFollowings(id, body) {
+    return await this.userService.updateUserFollowings(id, body);
   }
 
   @Delete(':id')
