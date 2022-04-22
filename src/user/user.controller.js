@@ -76,8 +76,9 @@ export class UserController {
   }
 
   @Patch(':id/followers')
-  async updateUserFollowers() {
-    return await this.userService.updateUserFollowers();
+  @Bind(Param('id'), Body())
+  async updateUserFollowers(id, body) {
+    return await this.userService.updateUserFollowers(id, body);
   }
 
   @Patch(':id/followings')

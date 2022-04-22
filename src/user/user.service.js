@@ -1,14 +1,16 @@
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
 import Bubble from '../bubble/bubble.entity';
 import User from './user.entity';
 
 @Injectable()
-@Dependencies(getRepositoryToken(User), getRepositoryToken(Bubble))
+@Dependencies(getRepositoryToken(User), getRepositoryToken(Bubble), Connection)
 export class UserService {
-  constructor(userRepository, bubbleRepository) {
+  constructor(userRepository, bubbleRepository, connection) {
     this.userRepository = userRepository;
     this.bubbleRepository = bubbleRepository;
+    this.connection = connection;
   }
 
   async getUser() {
@@ -69,22 +71,40 @@ export class UserService {
     return await this.userRepository.update(id, user);
   }
 
-  async updateUserFollowers() {
-    return 'TODO: updateUserFollowers';
+  async updateUserFollowers(id, body) {
+    await this.connection
+      .createQueryBuilder()
+      .delete()
+      .from('user_follows_user')
+      .where('userId_2 = :id', { id: id })
+      .execute();
+    const newFollower = [];
+    for (const follower of body) {
+      let followObj = {};
+      followObj.userId_1 = follower.id;
+      followObj.userId_2 = parseInt(id);
+      newFollower.push(followObj);
+    }
+    return await this.connection
+      .createQueryBuilder()
+      .insert()
+      .into('user_follows_user')
+      .values(newFollower)
+      .execute();
   }
 
   async updateUserFollowings(id, body) {
-    const query = await this.userRepository
+    const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.id = :id', { id: id })
-      .leftJoinAndSelect('user.follows', id)
+      .leftJoinAndSelect('user.follows')
       .getOne();
-    query.follows = [];
-    await this.userRepository.save(query);
-    for (const userId of body) {
-      query.follows.push(userId);
+    user.follows = [];
+    await this.userRepository.save(user);
+    for (const userFollows of body) {
+      user.follows.push(userFollows);
     }
-    return await this.userRepository.save(query);
+    return await this.userRepository.save(user);
   }
 
   async deleteUser(id) {
