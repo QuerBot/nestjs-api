@@ -44,7 +44,10 @@ export class BubbleController {
   @Post()
   @Bind(Body())
   async postBubble(body) {
-    return await this.bubbleService.postBubble(body.name, body.description);
+    if (Object.keys(body).length !== 0) {
+      return await this.bubbleService.postBubble(body.name, body.description);
+    }
+    throw new BadRequestException('Missing Body');
   }
 
   @Patch(':id')
@@ -53,7 +56,7 @@ export class BubbleController {
     if (Object.keys(body).length !== 0) {
       return await this.bubbleService.updateBubble(id, body);
     }
-    throw new BadRequestException('Empty Body');
+    throw new BadRequestException('Missing Body');
   }
 
   @Delete(':id')

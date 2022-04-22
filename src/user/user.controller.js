@@ -78,13 +78,20 @@ export class UserController {
   @Patch(':id/followers')
   @Bind(Param('id'), Body())
   async updateUserFollowers(id, body) {
-    return await this.userService.updateUserFollowers(id, body);
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.updateUserFollowers(id, body);
+    }
+    throw new BadRequestException('Missing Body');
   }
 
   @Patch(':id/followings')
   @Bind(Param('id'), Body())
   async updateUserFollowings(id, body) {
-    return await this.userService.updateUserFollowings(id, body);
+    if (Object.keys(body).length !== 0) {
+      return await this.userService.updateUserFollowings(id, body);
+    }
+
+    throw new BadRequestException('Missing Body');
   }
 
   @Delete(':id')
