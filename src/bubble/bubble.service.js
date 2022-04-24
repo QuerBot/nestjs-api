@@ -1,6 +1,6 @@
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import generateId from '../util/helper/generadeId';
+import generateId from '../util/helper/generateId';
 import Bubble from './bubble.entity';
 import User from '../user/user.entity';
 

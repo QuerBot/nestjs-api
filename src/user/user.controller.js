@@ -78,6 +78,7 @@ export class UserController {
   @Patch(':id/followers')
   @Bind(Param('id'), Body())
   async updateUserFollowers(id, body) {
+    console.log(body);
     if (Object.keys(body).length !== 0) {
       return await this.userService.updateUserFollowers(id, body);
     }

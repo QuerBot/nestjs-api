@@ -1,6 +1,7 @@
 import { Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import generateDate from '../util/helper/generateDate';
 import Bubble from '../bubble/bubble.entity';
 import User from './user.entity';
 
@@ -82,9 +83,10 @@ export class UserService {
     for (const follower of body) {
       let followObj = {};
       followObj.userId_1 = follower.id;
-      followObj.userId_2 = parseInt(id);
+      followObj.userId_2 = id;
       newFollower.push(followObj);
     }
+    await this.updateUser(id, await generateDate());
     return await this.connection
       .createQueryBuilder()
       .insert()
