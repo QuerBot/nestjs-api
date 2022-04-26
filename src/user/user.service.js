@@ -86,7 +86,10 @@ export class UserService {
       followObj.userId_2 = id;
       newFollower.push(followObj);
     }
-    await this.updateUser(id, await generateDate());
+    let updateDate = {
+      lastCheck: await generateDate(),
+    };
+    await this.updateUser(id, updateDate);
     return await this.connection
       .createQueryBuilder()
       .insert()
@@ -106,6 +109,7 @@ export class UserService {
     for (const userFollows of body) {
       user.follows.push(userFollows);
     }
+    user.lastCheck = await generateDate();
     return await this.userRepository.save(user);
   }
 
