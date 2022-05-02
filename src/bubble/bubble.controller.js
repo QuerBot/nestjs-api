@@ -30,6 +30,12 @@ export class BubbleController {
     return await this.bubbleService.getBubbleById(id);
   }
 
+  @Get(':name/byName')
+  @Bind(Param('name'))
+  async getBubbleByName(name) {
+    return await this.bubbleService.getBubbleByName(name);
+  }
+
   @Get(':id/members')
   @Bind(Param('id'))
   async getBubbleMembers(id) {
@@ -37,8 +43,16 @@ export class BubbleController {
   }
 
   @Get(':id/mostFollowed')
-  async getBubbleMostFollowedUsers() {
-    return await this.bubbleService.getBubbleMostFollowedUsers();
+  @Bind(Param('id'), Body())
+  async getBubbleMostFollowedUsers(id, body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.bubbleService.getBubbleMostFollowedUsers(
+        id,
+        body.count,
+      );
+    } else {
+      return await this.bubbleService.getBubbleMostFollowedUsers(id, 5);
+    }
   }
 
   @Post()

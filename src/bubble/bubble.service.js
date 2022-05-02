@@ -23,6 +23,14 @@ export class BubbleService {
     });
   }
 
+  async getBubbleByName(name) {
+    return await this.bubbleRepository.find({
+      where: {
+        name: name,
+      },
+    });
+  }
+
   async getBubbleMembers(id) {
     return await this.userRepository.query(
       ` SELECT *
@@ -35,8 +43,26 @@ export class BubbleService {
     );
   }
 
-  async getBubbleMostFollowedUsers() {
-    return 'TODO: getBubbleMostFollowedUsers';
+  async getBubbleMostFollowedUsers(id, count) {
+    return await this.userRepository.query(
+      `SELECT userId_2, Count(userId_2) 
+      FROM user_follows_user 
+      WHERE userId_2 
+      IN(
+          SELECT userId 
+          FROM user_bubble_bubble
+          WHERE bubbleId = '${id}'
+          AND userId 
+          IN (
+              SELECT userId_2 
+              FROM user_follows_user 
+              GROUP BY userId_2 
+          )
+      ) 
+      GROUP BY userId_2
+      ORDER BY Count(userId_2) DESC
+      LIMIT ${count};`,
+    );
   }
 
   async postBubble(name, description) {
