@@ -58,7 +58,11 @@ export class UserService {
   }
 
   async postUser(user) {
-    return await this.userRepository.save(user);
+    try {
+      await this.userRepository.save(user);
+    } catch(e) {
+      console.log(e);
+    };
   }
 
   async addUserToBubble(id, bubbleId) {
