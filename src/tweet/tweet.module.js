@@ -1,21 +1,13 @@
-import {
-  Controller,
-  Dependencies,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Body,
-  Bind,
-  Param,
-  BadRequestException,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TweetController } from './tweet.controller';
 import { TweetService } from './tweet.service';
+import Tweet from './tweet.entity';
+import User from '../user/user.entity';
 
-@Controller('tweet')
-@Dependencies(TweetService)
-export class TweetController {
-  constructor(tweetService) {
-    this.tweetService = tweetService;
-  }
-}
+@Module({
+  imports: [TypeOrmModule.forFeature([Tweet, User])],
+  controllers: [TweetController],
+  providers: [TweetService],
+})
+export class TweetModule {}
