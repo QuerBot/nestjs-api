@@ -1,9 +1,9 @@
 class Tweet {
-  constructor(tweetID, answered, senderID, user) {
+  constructor(tweetID, answered, senderID, requestedUser) {
     this.tweetID = tweetID;
     this.answered = answered;
     this.senderID = senderID;
-    this.user = user;
+    this.requestedUser = requestedUser;
   }
 }
 

@@ -54,6 +54,9 @@ export class UserService {
 
   async getUserHandle(id) {
     let user = await this.userRepository.findOne({ id });
+    if (user === undefined) {
+      return false;
+    }
     return user.handle;
   }
 

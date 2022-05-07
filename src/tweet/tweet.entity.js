@@ -17,12 +17,12 @@ module.exports = new EntitySchema({
     senderID: {
       type: 'bigint',
     },
-    relations: {
-      requestedUser: {
-        type: 'many-to-many',
-        target: 'User',
-        joinTable: true,
-      },
+  },
+  relations: {
+    requestedUser: {
+      type: 'many-to-one',
+      target: 'User',
+      joinTable: true,
     },
   },
 });
