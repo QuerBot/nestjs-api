@@ -9,4 +9,12 @@ export class TweetService {
   constructor(tweetRepository) {
     this.tweetRepository = tweetRepository;
   }
+
+  async getNextTweet(id) {
+    return await this.tweetRepository.find({
+      where: {
+        tweetID: id,
+      },
+    });
+  }
 }

@@ -18,4 +18,10 @@ export class TweetController {
   constructor(tweetService) {
     this.tweetService = tweetService;
   }
+
+  @Get(':id')
+  @Bind(Param('id'))
+  async getNextTweet(id) {
+    return await this.tweetService.getNextTweet(id);
+  }
 }
