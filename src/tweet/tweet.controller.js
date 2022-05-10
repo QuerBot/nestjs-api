@@ -24,4 +24,13 @@ export class TweetController {
   async getNextTweet(id) {
     return await this.tweetService.getNextTweet(id);
   }
+
+  @Post()
+  @Bind(Body())
+  async queueTweet(body) {
+    if (Object.keys(body).length !== 0) {
+      return await this.tweetService.queueTweet(body);
+    }
+    throw new BadRequestException('Missing Body');
+  }
 }

@@ -17,4 +17,12 @@ export class TweetService {
       },
     });
   }
+
+  async queueTweet(tweet) {
+    try {
+      await this.tweetRepository.save(tweet);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
