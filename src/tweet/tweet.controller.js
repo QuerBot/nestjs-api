@@ -19,10 +19,9 @@ export class TweetController {
     this.tweetService = tweetService;
   }
 
-  @Get(':id')
-  @Bind(Param('id'))
-  async getNextTweet(id) {
-    return await this.tweetService.getNextTweet(id);
+  @Get()
+  async getNextTweet() {
+    return await this.tweetService.getNextTweet();
   }
 
   @Post()
@@ -32,5 +31,11 @@ export class TweetController {
       return await this.tweetService.queueTweet(body);
     }
     throw new BadRequestException('Missing Body');
+  }
+
+  @Patch(':id')
+  @Bind(Param('id'))
+  async doneTweet(id) {
+    return await this.tweetService.doneTweet(id);
   }
 }

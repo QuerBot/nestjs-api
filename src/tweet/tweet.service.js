@@ -10,10 +10,13 @@ export class TweetService {
     this.tweetRepository = tweetRepository;
   }
 
-  async getNextTweet(id) {
-    return await this.tweetRepository.find({
+  async getNextTweet() {
+    return await this.tweetRepository.findOne({
       where: {
-        tweetID: id,
+        answered: false,
+      },
+      order: {
+        tweetID: 'ASC',
       },
     });
   }
@@ -24,5 +27,11 @@ export class TweetService {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async doneTweet(id) {
+    return await this.tweetRepository.update(id, {
+      answered: true,
+    });
   }
 }
