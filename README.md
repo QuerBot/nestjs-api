@@ -4,19 +4,19 @@
 
 ### with
 
-* bubble
-* userID
-* userHandle
-* followings
-* rating
+* bubble (generated ID / Many-to-Many-Relation to Bubble-Table - varchar)
+* userID (twitter-user-id - bigInt)
+* userHandle (twitter-user-handle at the time processed - varchar)
+* followings (relation to itself with userID to userID - Many-to-Many)
+* rating (int - custom rating if the user should be weighted more in a bubble)
 
 ## Saving Bubbles
 
 ### with
 
-* name
-* description
-* automatically generated ID
+* name (varchar)
+* description (varchar)
+* automatically generated ID (name > md5 encrypted)
 
 ## Saving Followers/Followings to User
 
