@@ -14,9 +14,6 @@ module.exports = new EntitySchema({
       type: 'boolean',
       default: false,
     },
-    senderID: {
-      type: 'bigint',
-    },
   },
   relations: {
     requestedUser: {

@@ -24,6 +24,12 @@ export class TweetController {
     return await this.tweetService.getNextTweet();
   }
 
+  @Get(':id')
+  @Bind(Param('id'))
+  async getTweetById(id) {
+    return await this.tweetService.getTweetById(id);
+  }
+
   @Post()
   @Bind(Body())
   async queueTweet(body) {

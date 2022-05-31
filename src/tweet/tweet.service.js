@@ -21,6 +21,10 @@ export class TweetService {
     });
   }
 
+  async getTweetById(id) {
+    return await this.tweetRepository.findOne(id);
+  }
+
   async queueTweet(tweet) {
     try {
       await this.tweetRepository.save(tweet);
