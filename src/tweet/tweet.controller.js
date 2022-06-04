@@ -39,7 +39,13 @@ export class TweetController {
     throw new BadRequestException('Missing Body');
   }
 
-  @Patch(':id')
+  @Patch(':id/inProgress')
+  @Bind(Param('id'))
+  async tweetInProgress(id) {
+    return await this.tweetService.tweetInProgress(id);
+  }
+
+  @Patch(':id/done')
   @Bind(Param('id'))
   async doneTweet(id) {
     return await this.tweetService.doneTweet(id);

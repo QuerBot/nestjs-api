@@ -11,8 +11,8 @@ module.exports = new EntitySchema({
       type: 'bigint',
     },
     answered: {
-      type: 'boolean',
-      default: false,
+      type: 'int',
+      default: 0,
     },
   },
   relations: {

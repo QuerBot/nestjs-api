@@ -33,9 +33,15 @@ export class TweetService {
     }
   }
 
+  async tweetInProgress(id) {
+    return await this.tweetRepository.update(id, {
+      answered: 1,
+    });
+  }
+
   async doneTweet(id) {
     return await this.tweetRepository.update(id, {
-      answered: true,
+      answered: 2,
     });
   }
 }
