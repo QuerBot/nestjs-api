@@ -33,10 +33,10 @@ export class TweetController {
   @Post()
   @Bind(Body())
   async queueTweet(body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.tweetService.queueTweet(body);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.tweetService.queueTweet(body);
   }
 
   @Patch(':id/inProgress')

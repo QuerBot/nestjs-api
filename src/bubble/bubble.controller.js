@@ -45,32 +45,31 @@ export class BubbleController {
   @Get(':id/mostFollowed')
   @Bind(Param('id'), Body())
   async getBubbleMostFollowedUsers(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.bubbleService.getBubbleMostFollowedUsers(
-        id,
-        body.count,
-      );
-    } else {
+    if (Object.keys(body).length === 0)
       return await this.bubbleService.getBubbleMostFollowedUsers(id, 5);
-    }
+
+    return await this.bubbleService.getBubbleMostFollowedUsers(
+      id,
+      body.count,
+    );
   }
 
   @Post()
   @Bind(Body())
   async postBubble(body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.bubbleService.postBubble(body.name, body.description);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.bubbleService.postBubble(body.name, body.description);
   }
 
   @Patch(':id')
   @Bind(Param('id'), Body())
   async updateBubble(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.bubbleService.updateBubble(id, body);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.bubbleService.updateBubble(id, body);
   }
 
   @Delete(':id')
