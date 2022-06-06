@@ -34,5 +34,10 @@ module.exports = new EntitySchema({
       target: 'User',
       joinTable: true,
     },
+    tweets: {
+      type: 'one-to-many',
+      target: 'Tweet',
+      joinTable: true,
+    },
   },
 });
