@@ -1,4 +1,4 @@
-import { Injectable, Dependencies } from '@nestjs/common';
+import { Logger, Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import generateDate from '../util/helper/generateDate';
@@ -8,6 +8,8 @@ import User from './user.entity';
 @Injectable()
 @Dependencies(getRepositoryToken(User), getRepositoryToken(Bubble), Connection)
 export class UserService {
+  logger = new Logger(UserService.name);
+
   constructor(userRepository, bubbleRepository, connection) {
     this.userRepository = userRepository;
     this.bubbleRepository = bubbleRepository;
@@ -63,8 +65,8 @@ export class UserService {
   async postUser(user) {
     try {
       await this.userRepository.save(user);
-    } catch(e) {
-      console.log(e);
+    } catch (e) {
+      this.logger.error(e);
     };
   }
 
@@ -72,6 +74,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
     const bubble = await this.bubbleRepository.findOne({ id: bubbleId });
     user.bubble.push(bubble);
+
     return await this.userRepository.save(user);
   }
 
@@ -97,6 +100,7 @@ export class UserService {
       lastCheck: await generateDate(),
     };
     await this.updateUser(id, updateDate);
+
     return await this.connection
       .createQueryBuilder()
       .insert()
@@ -112,17 +116,19 @@ export class UserService {
       .leftJoinAndSelect('user.follows')
       .getOne();
     user.follows = [];
+
     await this.userRepository.save(user);
     for (const userFollows of body) {
       user.follows.push(userFollows);
     }
     user.lastCheck = await generateDate();
+
     return await this.userRepository.save(user);
   }
 
   async deleteUser(id) {
     return await this.userRepository.delete({
-      id: id,
+      id,
     });
   }
   async deleteUserFromBubble(id, bubbleId) {

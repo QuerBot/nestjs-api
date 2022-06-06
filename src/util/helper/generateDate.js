@@ -1,5 +1,3 @@
-export default async function() {
-  let currentDate = new Date().toISOString();
-
-  return currentDate;
+export default async function () {
+  return new Date().toISOString();
 }

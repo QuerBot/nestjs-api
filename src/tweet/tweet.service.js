@@ -1,11 +1,12 @@
-import { Injectable, Dependencies } from '@nestjs/common';
+import { Logger, Injectable, Dependencies } from '@nestjs/common';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import Tweet from './tweet.entity';
-import User from '../user/user.entity';
 
 @Injectable()
 @Dependencies(getRepositoryToken(Tweet))
 export class TweetService {
+  logger = new Logger(TweetService.name);
+
   constructor(tweetRepository) {
     this.tweetRepository = tweetRepository;
   }
@@ -25,11 +26,11 @@ export class TweetService {
     return await this.tweetRepository.findOne(id);
   }
 
-  async queueTweet(tweet) {
+  async queueTweet(tweets) {
     try {
-      await this.tweetRepository.save(tweet);
+      await this.tweetRepository.save(tweets);
     } catch (e) {
-      console.log(e);
+      this.logger.error(e);
     }
   }
 

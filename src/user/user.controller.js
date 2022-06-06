@@ -1,4 +1,5 @@
 import {
+  Logger,
   Controller,
   Dependencies,
   Get,
@@ -15,6 +16,8 @@ import { UserService } from './user.service';
 @Controller('user')
 @Dependencies(UserService)
 export class UserController {
+  logger = new Logger(UserController.name);
+
   constructor(userService) {
     this.userService = userService;
   }
@@ -51,48 +54,47 @@ export class UserController {
   @Post()
   @Bind(Body())
   async postUser(body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.postUser(body);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.userService.postUser(body);
   }
 
   @Post(':id/addToBubble')
   @Bind(Param('id'), Body())
   async addUserToBubble(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.addUserToBubble(id, body.id);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.userService.addUserToBubble(id, body.id);
   }
 
   @Patch(':id')
   @Bind(Param('id'), Body())
   async updateUser(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.updateUser(id, body);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.userService.updateUser(id, body);
   }
 
   @Patch(':id/followers')
   @Bind(Param('id'), Body())
   async updateUserFollowers(id, body) {
-    console.log(body);
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.updateUserFollowers(id, body);
-    }
-    throw new BadRequestException('Missing Body');
+    this.logger.debug('UpdatedUserFollowers', body);
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.userService.updateUserFollowers(id, body);
   }
 
   @Patch(':id/followings')
   @Bind(Param('id'), Body())
   async updateUserFollowings(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.updateUserFollowings(id, body);
-    }
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
 
-    throw new BadRequestException('Missing Body');
+    return await this.userService.updateUserFollowings(id, body);
   }
 
   @Delete(':id')
@@ -104,9 +106,9 @@ export class UserController {
   @Delete(':id/bubble')
   @Bind(Param('id'), Body())
   async deleteUserFromBubble(id, body) {
-    if (Object.keys(body).length !== 0) {
-      return await this.userService.deleteUserFromBubble(id, body.id);
-    }
-    throw new BadRequestException('Missing Body');
+    if (Object.keys(body).length === 0)
+      throw new BadRequestException('Missing Body');
+
+    return await this.userService.deleteUserFromBubble(id, body.id);
   }
 }
