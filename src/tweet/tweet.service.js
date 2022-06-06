@@ -26,11 +26,11 @@ export class TweetService {
     return await this.tweetRepository.findOne(id);
   }
 
-  async queueTweet(tweet) {
+  async queueTweet(tweets) {
     try {
-      await this.tweetRepository.save(tweet);
+      await this.tweetRepository.save(tweets);
     } catch (e) {
-      logger.error(e);
+      this.logger.error(e);
     }
   }
 

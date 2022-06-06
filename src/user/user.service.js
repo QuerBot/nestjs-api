@@ -66,7 +66,7 @@ export class UserService {
     try {
       await this.userRepository.save(user);
     } catch (e) {
-      logger.error(e);
+      this.logger.error(e);
     };
   }
 

@@ -81,7 +81,7 @@ export class UserController {
   @Patch(':id/followers')
   @Bind(Param('id'), Body())
   async updateUserFollowers(id, body) {
-    logger.debug('UpdatedUserFollowers', body);
+    this.logger.debug('UpdatedUserFollowers', body);
     if (Object.keys(body).length === 0)
       throw new BadRequestException('Missing Body');
 
