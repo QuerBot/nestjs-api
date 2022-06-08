@@ -19,11 +19,17 @@ export class TweetService {
       order: {
         tweetID: 'ASC',
       },
+      relations: ['requestedUser'],
     });
   }
 
   async getTweetById(id) {
-    return await this.tweetRepository.findOne(id);
+    return await this.tweetRepository.findOne({
+      where: {
+        tweetID: id,
+      },
+      relations: ['requestedUser'],
+    });
   }
 
   async queueTweet(tweets) {
