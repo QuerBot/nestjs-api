@@ -13,6 +13,10 @@ module.exports = new EntitySchema({
     handle: {
       type: 'varchar',
     },
+    lastChanged: {
+      type: 'datetime',
+      default: () => 'NOW()',
+    },
     lastCheck: {
       type: 'datetime',
       default: () => 'NOW()',

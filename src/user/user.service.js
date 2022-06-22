@@ -74,6 +74,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
     const bubble = await this.bubbleRepository.findOne({ id: bubbleId });
     user.bubble.push(bubble);
+    user.lastChanged = await generateDate();
 
     return await this.userRepository.save(user);
   }
@@ -98,6 +99,7 @@ export class UserService {
     }
     let updateDate = {
       lastCheck: await generateDate(),
+      lastChanged: await generateDate(),
     };
     await this.updateUser(id, updateDate);
 
@@ -122,6 +124,7 @@ export class UserService {
       user.follows.push(userFollows);
     }
     user.lastCheck = await generateDate();
+    user.lastChanged = await generateDate();
 
     return await this.userRepository.save(user);
   }
