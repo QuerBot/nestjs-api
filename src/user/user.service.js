@@ -75,11 +75,13 @@ export class UserService {
     const bubble = await this.bubbleRepository.findOne({ id: bubbleId });
     user.bubble.push(bubble);
     user.lastChanged = await generateDate();
+    user.lastCheck = await generateDate();
 
     return await this.userRepository.save(user);
   }
 
   async updateUser(id, user) {
+    user.lastChanged = await generateDate();
     return await this.userRepository.update(id, user);
   }
 
