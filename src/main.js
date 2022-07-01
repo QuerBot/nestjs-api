@@ -13,10 +13,10 @@ async function bootstrap() {
 
   if (typeof PhusionPassenger !== 'undefined') {
     appPort = 'passenger';
-    app.listen('passenger');
+    app.listen(appPort);
   } else {
-    appPort = 3000;
-    app.listen(3000);
+    appPort = 1337;
+    app.listen(appPort);
   }
   logger.log(`App listening on port ${appPort}`);
 }
