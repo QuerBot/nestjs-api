@@ -14,7 +14,7 @@ export class TweetService {
   async getNextTweet() {
     return await this.tweetRepository.findOne({
       where: {
-        answered: false,
+        answered: 0,
       },
       order: {
         tweetID: 'ASC',
