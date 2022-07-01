@@ -67,7 +67,7 @@ export class UserService {
       await this.userRepository.save(user);
     } catch (e) {
       this.logger.error(e);
-    };
+    }
   }
 
   async addUserToBubble(id, bubbleId) {

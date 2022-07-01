@@ -48,10 +48,7 @@ export class BubbleController {
     if (Object.keys(body).length === 0)
       return await this.bubbleService.getBubbleMostFollowedUsers(id, 5);
 
-    return await this.bubbleService.getBubbleMostFollowedUsers(
-      id,
-      body.count,
-    );
+    return await this.bubbleService.getBubbleMostFollowedUsers(id, body.count);
   }
 
   @Post()
