@@ -10,8 +10,11 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
-  const appPort = process.env.APP_PORT || process.env.PORT || 3000;
-  await app.listen(appPort);
+  if (typeof PhusionPassenger !== 'undefined') {
+    app.listen('passenger');
+  } else {
+    app.listen(3000);
+  }
   logger.log(`App listening on port ${appPort}`);
 }
 bootstrap();
