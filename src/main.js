@@ -7,6 +7,9 @@ async function bootstrap() {
   const logger = new Logger('Main');
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v1');
+  app.enableCors({
+    origin: process.env.DOMAIN_WILDCARD,
+  });
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   let appPort;
